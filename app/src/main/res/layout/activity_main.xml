@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="uithreadsdemo.youtube.com.uithreaddemo.MainActivity">
+
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/textViewthreadCount"
+       android:layout_alignParentTop="true"
+       android:textSize="20sp"
+       android:gravity="center"
+       android:layout_marginBottom="10dp"
+       android:padding="5dp"/>
+
+   <Button
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/buttonThreadStarter"
+       android:layout_below="@+id/textViewthreadCount"
+       android:text="@string/string_startservice"/>
+
+   <Button
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/buttonStopthread"
+       android:layout_below="@+id/buttonThreadStarter"
+       android:layout_marginTop="10dp"
+       android:text="@string/string_stopservice"/>
+
+   <Button
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/buttonBindService"
+       android:layout_below="@+id/buttonStopthread"
+       android:text="@string/string_bind"
+       android:layout_marginTop="10dp"/>
+
+   <Button
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/buttonUnBindService"
+       android:layout_below="@+id/buttonBindService"
+       android:text="@string/string_unbind"
+       android:layout_marginTop="10dp"/>
+
+   <Button
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/buttonGetRandomNumber"
+       android:layout_below="@+id/buttonUnBindService"
+       android:text="@string/string_getrandom_number"
+       android:layout_marginTop="10dp"/>
+
+
+</RelativeLayout>

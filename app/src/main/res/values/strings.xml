@@ -2,6 +2,9 @@
     <string name="app_name">UIThreadDemo</string>
     <string name="string_startthread">Start Thread</string>
     <string name="string_stopthread">Stop thread</string>
+    <string name="string_start_async">Start Async</string>
+    <string name="string_stop_async">Stop Async</string>
+    <string name="string_cancel_async">Cancel Async</string>
     <string name="string_startservice">Start Service</string>
     <string name="string_stopservice">Stop Service</string>
     <string name="service_demo_tag">ServiceDemo</string>

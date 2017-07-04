@@ -24,7 +24,7 @@
        android:layout_height="wrap_content"
        android:id="@+id/buttonThreadStarter"
        android:layout_below="@+id/textViewthreadCount"
-       android:text="@string/string_startservice"/>
+       android:text="@string/string_startthread"/>
 
    <Button
        android:layout_width="match_parent"
@@ -32,9 +32,9 @@
        android:id="@+id/buttonStopthread"
        android:layout_below="@+id/buttonThreadStarter"
        android:layout_marginTop="10dp"
-       android:text="@string/string_stopservice"/>
+       android:text="@string/string_stopthread"/>
 
-   <Button
+   <!--<Button
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:id="@+id/buttonBindService"
@@ -56,7 +56,7 @@
        android:id="@+id/buttonGetRandomNumber"
        android:layout_below="@+id/buttonUnBindService"
        android:text="@string/string_getrandom_number"
-       android:layout_marginTop="10dp"/>
+       android:layout_marginTop="10dp"/>-->
 
 
 </RelativeLayout>

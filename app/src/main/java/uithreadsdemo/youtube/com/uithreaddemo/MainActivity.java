@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private Button buttonStart, buttonStop, buttonBind,buttonUnBind,buttonGetRandomNumber;
+    private Button buttonStart, buttonStop;
     private TextView textViewthreadCount;
     int count = 0;
     private MyAsyncTask myAsyncTask;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isServiceBound;
     private ServiceConnection  serviceConnection;
 
-    /*Handler handler;*/
+    Handler handler;
 
 
     private  Intent serviceIntent;
@@ -49,19 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         buttonStart = (Button) findViewById(R.id.buttonThreadStarter);
         buttonStop = (Button) findViewById(R.id.buttonStopthread);
-        buttonBind=(Button)findViewById(R.id.buttonBindService);
-        buttonUnBind=(Button)findViewById(R.id.buttonUnBindService);
-        buttonGetRandomNumber=(Button)findViewById(R.id.buttonGetRandomNumber);
+
 
 
         textViewthreadCount = (TextView) findViewById(R.id.textViewthreadCount);
 
         buttonStart.setOnClickListener(this);
         buttonStop.setOnClickListener(this);
-        buttonBind.setOnClickListener(this);
-        buttonUnBind.setOnClickListener(this);
-        buttonGetRandomNumber.setOnClickListener(this);
-        /*handler=new Handler(getApplicationContext().getMainLooper());*/
+        handler=new Handler();
 
         serviceIntent=new Intent(getApplicationContext(),MyService.class);
 
@@ -73,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonThreadStarter:
                 mStopLoop = true;
 
-                /*new Thread(new Runnable() {
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
                         while (mStopLoop){
@@ -93,48 +88,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         }
                     }
-                }).start();*/
+                }).start();
                 /*myAsyncTask=new MyAsyncTask();
                 myAsyncTask.execute(count);*/
-                startService(serviceIntent);
                 break;
             case R.id.buttonStopthread:
-                /*mStopLoop = false;*/
+                mStopLoop = false;
                /* myAsyncTask.cancel(true);*/
-                stopService(serviceIntent);
+                //stopService(serviceIntent);
                 break;
-            case R.id.buttonBindService:bindService();break;
+            /*case R.id.buttonBindService:bindService();break;
             case R.id.buttonUnBindService: unbindService();break;
-            case R.id.buttonGetRandomNumber: setRandomNumber();break;
+            case R.id.buttonGetRandomNumber: setRandomNumber();break;*/
 
-        }
-    }
-
-    private void bindService(){
-        if(serviceConnection==null){
-            serviceConnection=new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                    MyService.MyServiceBinder myServiceBinder=(MyService.MyServiceBinder)iBinder;
-                    myService=myServiceBinder.getService();
-                    isServiceBound=true;
-                }
-
-                @Override
-                public void onServiceDisconnected(ComponentName componentName) {
-                    isServiceBound=false;
-                }
-            };
-        }
-
-        bindService(serviceIntent,serviceConnection,Context.BIND_AUTO_CREATE);
-        
-    }
-
-    private void unbindService(){
-        if(isServiceBound){
-            unbindService(serviceConnection);
-            isServiceBound=false;
         }
     }
 

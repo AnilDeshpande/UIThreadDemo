@@ -25,16 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonStart, buttonStop;
     private TextView textViewthreadCount;
     int count = 0;
-    private MyAsyncTask myAsyncTask;
-
-    private MyService myService;
-    private boolean isServiceBound;
-    private ServiceConnection  serviceConnection;
 
     Handler handler;
-
-
-    private  Intent serviceIntent;
 
     private boolean mStopLoop;
 
@@ -45,20 +37,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i(getString(R.string.service_demo_tag), "MainActivity thread id: " + Thread.currentThread().getId());
-
         buttonStart = (Button) findViewById(R.id.buttonThreadStarter);
         buttonStop = (Button) findViewById(R.id.buttonStopthread);
 
-
-
         textViewthreadCount = (TextView) findViewById(R.id.textViewthreadCount);
-
         buttonStart.setOnClickListener(this);
         buttonStop.setOnClickListener(this);
         handler=new Handler();
-
-        serviceIntent=new Intent(getApplicationContext(),MyService.class);
 
     }
 
@@ -89,66 +74,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 }).start();
-                /*myAsyncTask=new MyAsyncTask();
-                myAsyncTask.execute(count);*/
                 break;
             case R.id.buttonStopthread:
                 mStopLoop = false;
-               /* myAsyncTask.cancel(true);*/
-                //stopService(serviceIntent);
                 break;
-            /*case R.id.buttonBindService:bindService();break;
-            case R.id.buttonUnBindService: unbindService();break;
-            case R.id.buttonGetRandomNumber: setRandomNumber();break;*/
 
-        }
-    }
-
-    private void setRandomNumber(){
-        if(isServiceBound){
-            textViewthreadCount.setText("Random number: "+myService.getRandomNumber());
-        }else{
-            textViewthreadCount.setText("Service not bound");
-        }
-    }
-
-    private class MyAsyncTask extends AsyncTask<Integer, Integer, Integer> {
-
-        private int customCounter;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            customCounter = 0;
-        }
-
-        @Override
-        protected Integer doInBackground(Integer... integers) {
-            customCounter = integers[0];
-            while (mStopLoop) {
-                try {
-                    Thread.sleep(1000);
-                    customCounter++;
-                    publishProgress(customCounter);
-                } catch (InterruptedException e) {
-                    Log.i(TAG, e.getMessage());
-                }
-
-            }
-            return customCounter;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            textViewthreadCount.setText(""+values[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-            super.onPostExecute(integer);
-            textViewthreadCount.setText(""+integer);
-            count=integer;
         }
     }
 }

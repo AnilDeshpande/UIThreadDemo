@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.i(TAG,"Thread id of Main thread: "+Thread.currentThread().getId());
 
-
-
         buttonStart = (Button) findViewById(R.id.buttonThreadStarter);
         buttonStop = (Button) findViewById(R.id.buttonStopthread);
 
@@ -56,29 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
                 mStopLoop = true;
-
-                /*new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (mStopLoop){
-                            try{
-                                Thread.sleep(1000);
-                                count++;
-                            }catch (InterruptedException e){
-                                Log.i(TAG,e.getMessage());
-                            }
-                            Log.i(TAG,"Thread id in while loop: "+Thread.currentThread().getId()+", Count : "+count);
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    textViewthreadCount.setText(" "+count);
-                                }
-                            });
-
-                        }
-                    }
-                }).start();*/
-
                 //executeOnCustomLooper();
                 executeOnCustoLopperWithCustomHandler();
                break;

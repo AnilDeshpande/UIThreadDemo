@@ -1,18 +1,10 @@
 package uithreadsdemo.youtube.com.uithreaddemo;
 
-import android.app.Service;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
-import android.speech.tts.Voice;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.test.AndroidTestRunner;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Handler handler;
 
     private boolean mStopLoop;
+    LooperThread looperThread;
 
 
 
@@ -37,14 +30,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.i(TAG,"Thread id of Main thread: "+Thread.currentThread().getId());
+
+
+
         buttonStart = (Button) findViewById(R.id.buttonThreadStarter);
         buttonStop = (Button) findViewById(R.id.buttonStopthread);
 
         textViewthreadCount = (TextView) findViewById(R.id.textViewthreadCount);
         buttonStart.setOnClickListener(this);
         buttonStop.setOnClickListener(this);
-        handler=new Handler();
 
+        looperThread=new LooperThread();
+        looperThread.start();
+
+        handler=new Handler(Looper.getMainLooper());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonThreadStarter:
                 mStopLoop = true;
 
-                new Thread(new Runnable() {
+                /*new Thread(new Runnable() {
                     @Override
                     public void run() {
                         while (mStopLoop){
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 Log.i(TAG,e.getMessage());
                             }
                             Log.i(TAG,"Thread id in while loop: "+Thread.currentThread().getId()+", Count : "+count);
-                            textViewthreadCount.post(new Runnable() {
+                            handler.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     textViewthreadCount.setText(" "+count);
@@ -73,12 +73,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         }
                     }
-                }).start();
-                break;
-            case R.id.buttonStopthread:
-                mStopLoop = false;
-                break;
+                }).start();*/
+
+                executeOnCustomLooper();
+                //executeOnCustoLopperWithCustomHandler();
+               break;
+            case R.id.buttonStopthread: mStopLoop = false;
+                                        break;
 
         }
+    }
+
+    public void executeOnCustoLopperWithCustomHandler(){
+
+        looperThread.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                while (mStopLoop){
+                    try{
+                        Thread.sleep(1000);
+                        count++;
+                        //looperThread.handler.sendMessage(getMessageWithCount(""+count));
+                        Log.i(TAG,"Thread id of Runnable posted: "+Thread.currentThread().getId());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.i(TAG,"Thread id of runOnUIThread: "+Thread.currentThread().getId()+", Count : "+count);
+                                textViewthreadCount.setText(" "+count);
+                            }
+                        });
+                    }catch (InterruptedException exception){
+                        Log.i(TAG,"Thread for interrupted");
+                    }
+
+                }
+            }
+        });
+    }
+
+    public void executeOnCustomLooper(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (mStopLoop){
+                    try{
+                        Thread.sleep(1000);
+                        count++;
+                        Message message=new Message();
+                        message.obj=""+count;
+                        looperThread.handler.sendMessage(message);
+                    }catch (InterruptedException exception){
+                        Log.i(TAG,"Thread for interrupted");
+                    }
+
+                }
+            }
+        }).start();
+
+    }
+
+
+    private Message getMessageWithCount(String count){
+        Message message=new Message();
+        message.obj=""+count;
+        return message;
     }
 }

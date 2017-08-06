@@ -115,8 +115,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
+
                 while (mStopLoop){
                     try{
+                        Log.i(TAG,"Thread id of thread that sends message: "+Thread.currentThread().getId());
                         Thread.sleep(1000);
                         count++;
                         Message message=new Message();

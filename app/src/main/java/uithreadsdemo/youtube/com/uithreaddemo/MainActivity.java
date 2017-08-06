@@ -21,7 +21,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Handler handler;
 
     private boolean mStopLoop;
+
     LooperThread looperThread;
+    CustomHandlerThread customHandlerThread;
 
 
 
@@ -44,7 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         looperThread=new LooperThread();
         looperThread.start();
 
-        handler=new Handler(Looper.getMainLooper());
+        customHandlerThread=new CustomHandlerThread("HandlerThread");
+        customHandlerThread.start();
+
     }
 
     @Override
@@ -75,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }).start();*/
 
-                executeOnCustomLooper();
-                //executeOnCustoLopperWithCustomHandler();
+                //executeOnCustomLooper();
+                executeOnCustoLopperWithCustomHandler();
                break;
             case R.id.buttonStopthread: mStopLoop = false;
                                         break;
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Thread.sleep(1000);
                         count++;
                         //looperThread.handler.sendMessage(getMessageWithCount(""+count));
+                        customHandlerThread.mHandler.sendMessage(getMessageWithCount(""+count));
                         Log.i(TAG,"Thread id of Runnable posted: "+Thread.currentThread().getId());
                         runOnUiThread(new Runnable() {
                             @Override
@@ -134,6 +139,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    public void executeOnCustomHandlerLooper(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (mStopLoop){
+                    try{
+                        Log.i(TAG,"Thread id of thread that sends message: "+Thread.currentThread().getId());
+                        Thread.sleep(1000);
+                        count++;
+                        Message message=new Message();
+                        message.obj=""+count;
+                        looperThread.handler.sendMessage(message);
+                    }catch (InterruptedException exception){
+                        Log.i(TAG,"Thread for interrupted");
+                    }
+
+                }
+            }
+        }).start();
+
+    }
 
     private Message getMessageWithCount(String count){
         Message message=new Message();

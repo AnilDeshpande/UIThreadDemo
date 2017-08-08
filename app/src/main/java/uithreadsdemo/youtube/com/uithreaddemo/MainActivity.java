@@ -74,9 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 }).start();*/
-
                 executeOnCustomLooper();
-                //executeOnCustoLopperWithCustomHandler();
+
                break;
             case R.id.buttonStopthread: mStopLoop = false;
                                         break;
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void executeOnCustoLopperWithCustomHandler(){
+    public void executeOnCustoLooperWithCustomHandler(){
 
         looperThread.handler.post(new Runnable() {
             @Override

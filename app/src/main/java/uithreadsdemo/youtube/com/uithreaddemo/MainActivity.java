@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewthreadCount;
     int count = 0;
 
-    Handler handler;
-
     private boolean mStopLoop;
 
     LooperThread looperThread;
@@ -41,10 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonStart.setOnClickListener(this);
         buttonStop.setOnClickListener(this);
 
-        looperThread=new LooperThread();
-        looperThread.start();
-
-        customHandlerThread=new CustomHandlerThread("HandlerThread");
+        customHandlerThread = new CustomHandlerThread("CustomHandlerThread");
         customHandlerThread.start();
 
     }
@@ -54,8 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
                 mStopLoop = true;
-                //executeOnCustomLooper();
-                executeOnCustoLopperWithCustomHandler();
+                executeOnCustomLooper();
                break;
             case R.id.buttonStopthread: mStopLoop = false;
                                         break;
@@ -63,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void executeOnCustoLopperWithCustomHandler(){
+    public void executeOnCustoLooperWithCustomHandler(){
 
         looperThread.handler.post(new Runnable() {
             @Override
@@ -72,9 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     try{
                         Thread.sleep(1000);
                         count++;
-                        //looperThread.handler.sendMessage(getMessageWithCount(""+count));
                         customHandlerThread.mHandler.sendMessage(getMessageWithCount(""+count));
-                        Log.i(TAG,"Thread id of Runnable posted: "+Thread.currentThread().getId());
+                        Log.i(TAG,"Thread id from where Runnable got posted: "+Thread.currentThread().getId());
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -95,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 while (mStopLoop){
                     try{
                         Log.i(TAG,"Thread id of thread that sends message: "+Thread.currentThread().getId());
@@ -118,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 while (mStopLoop){
                     try{
                         Log.i(TAG,"Thread id of thread that sends message: "+Thread.currentThread().getId());
@@ -142,4 +133,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         message.obj=""+count;
         return message;
     }
+
 }

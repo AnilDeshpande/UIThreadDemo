@@ -18,11 +18,12 @@ public class LooperThread extends Thread {
     @Override
     public void run() {
         Looper.prepare();
+
         handler=new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                Log.i(TAG,"Thread id when message is posted: "+ Thread.currentThread().getId()+", Count : "+msg.obj);
+                Log.i(TAG,"Thread id : "+ Thread.currentThread().getId()+", Count : "+msg.obj);
             }
         };
         Looper.loop();

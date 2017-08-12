@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
                 mStopLoop = true;
-                executeOnCustomLooper();
+                executeOnCustoLooperWithCustomHandler();
                break;
             case R.id.buttonStopthread: mStopLoop = false;
                                         break;
@@ -59,14 +59,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void executeOnCustoLooperWithCustomHandler(){
 
-        looperThread.handler.post(new Runnable() {
+        customHandlerThread.mHandler.post(new Runnable() {
             @Override
             public void run() {
                 while (mStopLoop){
                     try{
                         Thread.sleep(1000);
                         count++;
-                        customHandlerThread.mHandler.sendMessage(getMessageWithCount(""+count));
                         Log.i(TAG,"Thread id from where Runnable got posted: "+Thread.currentThread().getId());
                         runOnUiThread(new Runnable() {
                             @Override
@@ -95,29 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         count++;
                         Message message=new Message();
                         message.obj=""+count;
-                        looperThread.handler.sendMessage(message);
-                    }catch (InterruptedException exception){
-                        Log.i(TAG,"Thread for interrupted");
-                    }
-
-                }
-            }
-        }).start();
-
-    }
-
-    public void executeOnCustomHandlerLooper(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (mStopLoop){
-                    try{
-                        Log.i(TAG,"Thread id of thread that sends message: "+Thread.currentThread().getId());
-                        Thread.sleep(1000);
-                        count++;
-                        Message message=new Message();
-                        message.obj=""+count;
-                        looperThread.handler.sendMessage(message);
+                        customHandlerThread.mHandler.sendMessage(message);
                     }catch (InterruptedException exception){
                         Log.i(TAG,"Thread for interrupted");
                     }
@@ -134,4 +111,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return message;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(looperThread!=null && looperThread.isAlive()){
+            looperThread.handler.getLooper().quit();
+        }
+
+        if(customHandlerThread!=null){
+            customHandlerThread.getLooper().quit();
+        }
+    }
 }

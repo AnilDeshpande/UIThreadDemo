@@ -1,10 +1,14 @@
 package uithreadsdemo.youtube.com.uithreaddemo;
 
 import android.app.IntentService;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.Random;
@@ -60,6 +64,9 @@ public class MyIntentService extends IntentService{
                 Thread.sleep(1000);
                 if(mIsRandomGeneratorOn){
                     mRandomNumber =new Random().nextInt(MAX)+MIN;
+                    if(!Util.isNumberPrime(mRandomNumber)){
+                        triggerNotification(mRandomNumber);
+                    }
                     Log.i(getString(R.string.service_demo_tag),"Thread id: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber);
                 }
             }catch (InterruptedException e){
@@ -84,5 +91,21 @@ public class MyIntentService extends IntentService{
 
     public int getRandomNumber(){
         return mRandomNumber;
+    }
+
+    private void triggerNotification(int number){
+
+        Log.i(getString(R.string.service_demo_tag),"Triggering Notification");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"prime_number_channel")
+                .setSmallIcon(R.drawable.prime_icon)
+                .setContentTitle("Prime number generated")
+                .setContentText("Prime number is : "+number)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("A service generated prime number"))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(1,builder.build());
+
+
     }
 }

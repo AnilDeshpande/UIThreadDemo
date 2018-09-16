@@ -2,6 +2,8 @@ package uithreadsdemo.youtube.com.uithreaddemo;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -15,17 +17,41 @@ public class MyIntentService extends IntentService{
     private final int MIN=0;
     private final int MAX=100;
 
-    public MyIntentService(String serviceName){
-        super(serviceName);
+    public MyIntentService(){
+        super(MyIntentService.class.getSimpleName());
+    }
+
+    class MyIntentServiceBinder extends Binder{
+        public MyIntentService getService(){
+            return MyIntentService.this;
+        }
+    }
+
+    private IBinder mBinder = new MyIntentServiceBinder();
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.i(getString(R.string.service_demo_tag),"In OnBind");
+        return mBinder;
+    }
+
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+        Log.i(getString(R.string.service_demo_tag),"Service Started");
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+        Log.i(getString(R.string.service_demo_tag),"In OnReBind");
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         mIsRandomGeneratorOn =true;
-
         startRandomNumberGenerator();
-
-
     }
 
     private void startRandomNumberGenerator(){
@@ -47,5 +73,16 @@ public class MyIntentService extends IntentService{
     public void onDestroy() {
         super.onDestroy();
         mIsRandomGeneratorOn=false;
+        Log.i(getString(R.string.service_demo_tag),"Service Destroyed");
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.i(getString(R.string.service_demo_tag),"In onUnbind");
+        return super.onUnbind(intent);
+    }
+
+    public int getRandomNumber(){
+        return mRandomNumber;
     }
 }

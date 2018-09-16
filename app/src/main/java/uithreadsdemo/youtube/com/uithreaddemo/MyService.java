@@ -91,6 +91,7 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Log.i(getString(R.string.service_demo_tag),"In onStartCommend, thread id: "+Thread.currentThread().getId());
         mIsRandomGeneratorOn =true;
             new Thread(new Runnable() {

@@ -22,6 +22,8 @@
             </intent-filter>
         </service>
 
+        <service android:name=".MyIntentService"/>
+
     </application>
 
 </manifest>

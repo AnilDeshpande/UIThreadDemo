@@ -34,29 +34,5 @@
        android:layout_marginTop="10dp"
        android:text="@string/string_stopservice"/>
 
-   <Button
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/buttonBindService"
-       android:layout_below="@+id/buttonStopthread"
-       android:text="@string/string_bind"
-       android:layout_marginTop="10dp"/>
-
-   <Button
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/buttonUnBindService"
-       android:layout_below="@+id/buttonBindService"
-       android:text="@string/string_unbind"
-       android:layout_marginTop="10dp"/>
-
-   <Button
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/buttonGetRandomNumber"
-       android:layout_below="@+id/buttonUnBindService"
-       android:text="@string/string_getrandom_number"
-       android:layout_marginTop="10dp"/>
-
 
 </RelativeLayout>

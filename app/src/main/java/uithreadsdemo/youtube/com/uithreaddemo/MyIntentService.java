@@ -1,13 +1,15 @@
 package uithreadsdemo.youtube.com.uithreaddemo;
 
 import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.Random;
 
-public class MyIntentService extends IntentService{
+public class MyIntentService extends Service{
 
     private int mRandomNumber;
     private boolean mIsRandomGeneratorOn;
@@ -15,17 +17,17 @@ public class MyIntentService extends IntentService{
     private final int MIN=0;
     private final int MAX=100;
 
-    public MyIntentService(String serviceName){
-        super(serviceName);
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        mIsRandomGeneratorOn =true;
-
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        mIsRandomGeneratorOn=true;
         startRandomNumberGenerator();
-
-
+        return START_STICKY;
     }
 
     private void startRandomNumberGenerator(){

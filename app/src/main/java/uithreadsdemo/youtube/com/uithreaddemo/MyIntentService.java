@@ -15,14 +15,13 @@ public class MyIntentService extends IntentService{
     private final int MIN=0;
     private final int MAX=100;
 
-    public MyIntentService(String serviceName){
-        super(serviceName);
+    public MyIntentService(){
+        super(MyIntentService.class.getSimpleName());
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         mIsRandomGeneratorOn =true;
-
         startRandomNumberGenerator();
 
 
@@ -47,5 +46,6 @@ public class MyIntentService extends IntentService{
     public void onDestroy() {
         super.onDestroy();
         mIsRandomGeneratorOn=false;
+        Log.i(getString(R.string.string_stopservice),"Thread Id: "+Thread.currentThread().getId());
     }
 }

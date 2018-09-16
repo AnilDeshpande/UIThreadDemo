@@ -15,12 +15,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".MyService" android:exported="true">
-            <intent-filter>
-                <action android:name="com.service.randomnumbergenerator"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </service>
 
         <service android:name=".MyIntentService"/>
 

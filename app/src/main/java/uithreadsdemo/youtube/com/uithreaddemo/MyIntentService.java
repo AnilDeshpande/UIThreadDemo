@@ -9,13 +9,17 @@ import android.util.Log;
 
 import java.util.Random;
 
-public class MyIntentService extends Service{
+public class MyIntentService extends IntentService{
 
     private int mRandomNumber;
     private boolean mIsRandomGeneratorOn;
 
     private final int MIN=0;
     private final int MAX=100;
+
+    public  MyIntentService(){
+        super(MyIntentService.class.getSimpleName());
+    }
 
     @Nullable
     @Override
@@ -24,10 +28,9 @@ public class MyIntentService extends Service{
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    protected void onHandleIntent(@Nullable Intent intent) {
         mIsRandomGeneratorOn=true;
         startRandomNumberGenerator();
-        return START_STICKY;
     }
 
     private void startRandomNumberGenerator(){

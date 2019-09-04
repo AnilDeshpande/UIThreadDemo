@@ -23,8 +23,6 @@ public class MyIntentService extends IntentService{
     protected void onHandleIntent(@Nullable Intent intent) {
         mIsRandomGeneratorOn =true;
         startRandomNumberGenerator();
-
-
     }
 
     private void startRandomNumberGenerator(){

@@ -3,8 +3,9 @@ package uithreadsdemo.youtube.com.uithreaddemo;
 import android.app.IntentService;
 import android.app.Notification;
 import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.Random;
@@ -22,13 +23,8 @@ public class MyIntentService extends IntentService{
     }
 
     @Override
-    public void onStart(@Nullable Intent intent, int startId) {
-        super.onStart(intent, startId);
-        startForeground(123, getNotification());
-    }
-
-    @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        startForeground(1, getNotification());
         mIsRandomGeneratorOn =true;
         startRandomNumberGenerator();
     }
@@ -44,7 +40,6 @@ public class MyIntentService extends IntentService{
             }catch (InterruptedException e){
                 Log.i(getString(R.string.service_demo_tag),"Thread Interrupted");
             }
-
         }
     }
 
@@ -56,6 +51,7 @@ public class MyIntentService extends IntentService{
     }
 
     private Notification getNotification(){
+
 
         return MyApplication.getMyAppsNotificationManager().getNotification(MainActivity.class,
                 "Service Started",

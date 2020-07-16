@@ -1,18 +1,10 @@
 package uithreadsdemo.youtube.com.uithreaddemo;
 
-import android.app.Service;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Looper;
-import android.speech.tts.Voice;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
-import android.test.AndroidTestRunner;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -49,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonStart = (Button) findViewById(R.id.buttonThreadStarter);
         buttonStop = (Button) findViewById(R.id.buttonStopthread);
 
-
-
         textViewthreadCount = (TextView) findViewById(R.id.textViewthreadCount);
 
         buttonStart.setOnClickListener(this);
@@ -65,7 +55,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
                 mStopLoop = true;
-                startService(serviceIntent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(serviceIntent);
+                }else{
+                    startService(serviceIntent);
+                }
                 break;
             case R.id.buttonStopthread:
                 stopService(serviceIntent);

@@ -1,7 +1,9 @@
 package uithreadsdemo.youtube.com.uithreaddemo;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Intent;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -17,6 +19,12 @@ public class MyIntentService extends IntentService{
 
     public MyIntentService(){
         super(MyIntentService.class.getSimpleName());
+    }
+
+    @Override
+    public void onStart(@Nullable Intent intent, int startId) {
+        super.onStart(intent, startId);
+        startForeground(123, getNotification());
     }
 
     @Override
@@ -45,5 +53,16 @@ public class MyIntentService extends IntentService{
         super.onDestroy();
         mIsRandomGeneratorOn=false;
         Log.i(getString(R.string.string_stopservice),"Thread Id: "+Thread.currentThread().getId());
+    }
+
+    private Notification getNotification(){
+
+        return MyApplication.getMyAppsNotificationManager().getNotification(MainActivity.class,
+                "Service Started",
+                "Service running",
+                "Service will continue to run",
+                1,
+                false,
+                1);
     }
 }

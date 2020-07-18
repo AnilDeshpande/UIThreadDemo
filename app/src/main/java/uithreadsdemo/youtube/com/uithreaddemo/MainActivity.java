@@ -21,17 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int count = 0;
 
     private MyIntentService myService;
-    private boolean isServiceBound;
-    private ServiceConnection  serviceConnection;
-
-    /*Handler handler;*/
-
 
     private  Intent serviceIntent;
-
-    private boolean mStopLoop;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +40,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonStop.setOnClickListener(this);
 
         serviceIntent=new Intent(getApplicationContext(),MyIntentService.class);
-
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
-                mStopLoop = true;
-                ContextCompat.startForegroundService(this, serviceIntent);
+                MyIntentService.enqueueWork(this,serviceIntent);
                 break;
             case R.id.buttonStopthread:
                 stopService(serviceIntent);

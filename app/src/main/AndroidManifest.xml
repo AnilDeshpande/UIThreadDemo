@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uithreadsdemo.youtube.com.uithreaddemo">
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
@@ -15,14 +14,11 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <service android:name=".MyIntentService"/>
-
-
+        <service android:name=".MyIntentService" android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 
 </manifest>

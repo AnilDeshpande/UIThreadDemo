@@ -1,15 +1,17 @@
 package uithreadsdemo.youtube.com.uithreaddemo;
 
-import android.app.IntentService;
 import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
+import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
 import java.util.Random;
 
-public class MyIntentService extends IntentService{
+public class MyIntentService extends JobIntentService {
 
     private int mRandomNumber;
     private boolean mIsRandomGeneratorOn;
@@ -17,14 +19,14 @@ public class MyIntentService extends IntentService{
     private final int MIN=0;
     private final int MAX=100;
 
-    public MyIntentService(){
-        super(MyIntentService.class.getSimpleName());
+    static void enqueueWork(Context context, Intent intent){
+        enqueueWork(context,MyIntentService.class, 101, intent);
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        startForeground(1, getNotification());
-        mIsRandomGeneratorOn =true;
+    protected void onHandleWork(@NonNull Intent intent) {
+        Log.i(getString(R.string.service_demo_tag), "onHandleWork, Thread Id: "+Thread.currentThread().getId());
+        mIsRandomGeneratorOn = true;
         startRandomNumberGenerator();
     }
 
@@ -35,6 +37,9 @@ public class MyIntentService extends IntentService{
                 if(mIsRandomGeneratorOn){
                     mRandomNumber =new Random().nextInt(MAX)+MIN;
                     Log.i(getString(R.string.service_demo_tag),"Thread id: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber);
+                }else {
+                    Log.i(getString(R.string.service_demo_tag),"Service stopped");
+                    return;
                 }
             }catch (InterruptedException e){
                 Log.i(getString(R.string.service_demo_tag),"Thread Interrupted");
@@ -49,13 +54,23 @@ public class MyIntentService extends IntentService{
         Log.i(getString(R.string.service_demo_tag),getString(R.string.string_stopservice)+ ", thread Id: "+Thread.currentThread().getId());
     }
 
-    private Notification getNotification(){
+    @Override
+    public boolean onStopCurrentWork() {
+        Log.i(getString(R.string.service_demo_tag), "onStopCurrentWork, Thread Id: "+Thread.currentThread().getId());
+        return super.onStopCurrentWork();
+    }
 
+    private Notification getNotification(){
 
         return MyApplication.getMyAppsNotificationManager().getNotification(MainActivity.class,
                 "BackgroundService running",
                 1,
                 false,
                 1);
+    }
+
+    @Override
+    public IBinder onBind(@NonNull Intent intent) {
+        return super.onBind(intent);
     }
 }

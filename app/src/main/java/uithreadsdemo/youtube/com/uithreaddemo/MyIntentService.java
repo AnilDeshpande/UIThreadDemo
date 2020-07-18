@@ -2,6 +2,8 @@ package uithreadsdemo.youtube.com.uithreaddemo;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.job.JobParameters;
+import android.app.job.JobService;
 import android.content.Intent;
 import android.util.Log;
 
@@ -9,7 +11,7 @@ import androidx.annotation.Nullable;
 
 import java.util.Random;
 
-public class MyIntentService extends IntentService{
+public class MyIntentService extends JobService {
 
     private int mRandomNumber;
     private boolean mIsRandomGeneratorOn;
@@ -17,15 +19,45 @@ public class MyIntentService extends IntentService{
     private final int MIN=0;
     private final int MAX=100;
 
-    public MyIntentService(){
-        super(MyIntentService.class.getSimpleName());
+    /**
+     * Return FALSE when this jpb is of short duration
+     * and needs to be executed for very small time.
+     * By default everything here runs on UI thread. If you don't
+     * want to block the UI thread with long running work, then use thread.
+     * Return TRUE whenever you are running long running tasks. So when you are
+     * using a thread to do long running task, return true.
+     * @param jobParameters
+     * @return
+     */
+    @Override
+    public boolean onStartJob(JobParameters jobParameters) {
+        Log.i(getString(R.string.service_demo_tag),"onStartJob");
+        doBackgroundWork();
+        return true;
     }
 
+    private void doBackgroundWork(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mIsRandomGeneratorOn =true;
+                startRandomNumberGenerator();
+            }
+        }).start();
+    }
+
+    /**
+     * This method gets called when job gets cancelled.
+     * Return True if you want to restart the job automatically when a condition is met (WIFI - ON)
+     * Return false if you want don't want to restart the job automatically even when the condition is met (WIFI - OFF)
+     * @param jobParameters
+     * @return
+     */
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        startForeground(1, getNotification());
-        mIsRandomGeneratorOn =true;
-        startRandomNumberGenerator();
+    public boolean onStopJob(JobParameters jobParameters) {
+        Log.i(getString(R.string.service_demo_tag),"onStopJob");
+        mIsRandomGeneratorOn = false;
+        return false;
     }
 
     private void startRandomNumberGenerator(){
@@ -47,15 +79,5 @@ public class MyIntentService extends IntentService{
         super.onDestroy();
         mIsRandomGeneratorOn=false;
         Log.i(getString(R.string.service_demo_tag),getString(R.string.string_stopservice)+ ", thread Id: "+Thread.currentThread().getId());
-    }
-
-    private Notification getNotification(){
-
-
-        return MyApplication.getMyAppsNotificationManager().getNotification(MainActivity.class,
-                "BackgroundService running",
-                1,
-                false,
-                1);
     }
 }

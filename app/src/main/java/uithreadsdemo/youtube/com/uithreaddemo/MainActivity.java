@@ -1,8 +1,10 @@
 package uithreadsdemo.youtube.com.uithreaddemo;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,15 +26,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isServiceBound;
     private ServiceConnection  serviceConnection;
 
-    /*Handler handler;*/
-
-
-    private  Intent serviceIntent;
-
-    private boolean mStopLoop;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,20 +41,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonStart.setOnClickListener(this);
         buttonStop.setOnClickListener(this);
 
-        serviceIntent=new Intent(getApplicationContext(),MyIntentService.class);
-
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
-                mStopLoop = true;
-                ContextCompat.startForegroundService(this, serviceIntent);
+                startJob();
                 break;
             case R.id.buttonStopthread:
-                stopService(serviceIntent);
+                stopJob();
                 break;
         }
+    }
+
+    private void startJob(){
+        ComponentName componentName = new ComponentName(this, MyIntentService.class);
+        JobInfo jobInfo = new JobInfo.Builder(101,componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setPeriodic(15*60*1000)
+                .setRequiresCharging(false)
+                .setPersisted(true)
+                .build();
+
+        JobScheduler jobScheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
+        if(jobScheduler.schedule(jobInfo)==JobScheduler.RESULT_SUCCESS){
+            Log.i(getString(R.string.service_demo_tag), "MainActivity thread id: " + Thread.currentThread().getId()+", job successfully scheduled");
+        }else {
+            Log.i(getString(R.string.service_demo_tag), "MainActivity thread id: " + Thread.currentThread().getId()+", job could not be scheduled");
+        }
+    }
+
+    private void stopJob(){
+        JobScheduler jobScheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
+        jobScheduler.cancel(101);
     }
 }

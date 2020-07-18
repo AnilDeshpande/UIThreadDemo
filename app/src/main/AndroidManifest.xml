@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uithreadsdemo.youtube.com.uithreaddemo">
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".MyIntentService"/>
+        <service android:name=".MyIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
 
     </application>

@@ -3,10 +3,9 @@ package uithreadsdemo.youtube.com.uithreaddemo;
 import android.app.IntentService;
 import android.app.Notification;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import android.util.Log;
 
 import java.util.Random;
 
@@ -54,9 +53,7 @@ public class MyIntentService extends IntentService{
 
 
         return MyApplication.getMyAppsNotificationManager().getNotification(MainActivity.class,
-                "Service Started",
-                "Service running",
-                "Service will continue to run",
+                "BackgroundService running",
                 1,
                 false,
                 1);

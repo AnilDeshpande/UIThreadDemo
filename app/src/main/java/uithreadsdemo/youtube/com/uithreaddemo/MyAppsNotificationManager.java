@@ -42,16 +42,14 @@ class MyAppsNotificationManager {
         }
     }
 
-    public Notification getNotification(Class targetNotificationActivity, String title, String text, String bigText, int priority, boolean autoCancel, int notificationId){
+    public Notification getNotification(Class targetNotificationActivity, String title,  int priority, boolean autoCancel, int notificationId){
         Intent intent = new Intent(context, targetNotificationActivity);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, 0);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"123")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,context.getString(R.string.channelId))
                 .setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_icon_large))
                 .setContentTitle(title)
-                .setContentText(text)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setChannelId("123")

@@ -11,7 +11,7 @@ public class MyApplication extends Application {
         super.onCreate();
         notificationManager = MyAppsNotificationManager.getInstance(this);
         notificationManager.registerNotificationChannelChannel(
-                "123",
+                getString(R.string.channelId),
                 "BackgroundService",
                 "BackgroundService");
     }

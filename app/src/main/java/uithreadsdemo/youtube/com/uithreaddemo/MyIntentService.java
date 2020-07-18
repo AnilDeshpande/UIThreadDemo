@@ -46,7 +46,7 @@ public class MyIntentService extends IntentService{
     public void onDestroy() {
         super.onDestroy();
         mIsRandomGeneratorOn=false;
-        Log.i(getString(R.string.string_stopservice),"Thread Id: "+Thread.currentThread().getId());
+        Log.i(getString(R.string.service_demo_tag),getString(R.string.string_stopservice)+ ", thread Id: "+Thread.currentThread().getId());
     }
 
     private Notification getNotification(){

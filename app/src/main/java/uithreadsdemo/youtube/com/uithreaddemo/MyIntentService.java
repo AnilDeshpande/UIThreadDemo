@@ -1,13 +1,8 @@
 package uithreadsdemo.youtube.com.uithreaddemo;
 
-import android.app.IntentService;
-import android.app.Notification;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
-import android.content.Intent;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import java.util.Random;
 

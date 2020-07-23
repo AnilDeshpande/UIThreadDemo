@@ -60,15 +60,6 @@ public class MyIntentService extends JobIntentService {
         return super.onStopCurrentWork();
     }
 
-    private Notification getNotification(){
-
-        return MyApplication.getMyAppsNotificationManager().getNotification(MainActivity.class,
-                "BackgroundService running",
-                1,
-                false,
-                1);
-    }
-
     @Override
     public IBinder onBind(@NonNull Intent intent) {
         return super.onBind(intent);

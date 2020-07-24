@@ -37,7 +37,7 @@ public class MyIntentService extends JobIntentService {
     }
 
     private void startRandomNumberGenerator(String seedValue){
-        while (isThreadOn){
+        for (int i=0;i<5;i++){
             try{
                 if(isStopped()){
                     Log.i(getString(R.string.service_demo_tag), "Sorry, JobScheduler is force stopping the thread: "+ isStopped());
@@ -49,7 +49,6 @@ public class MyIntentService extends JobIntentService {
             }catch (InterruptedException e){
                 Log.i(getString(R.string.service_demo_tag),"Thread Interrupted");
             }
-
         }
         Log.i(getString(R.string.service_demo_tag),"Service stopped");
         stopSelf();

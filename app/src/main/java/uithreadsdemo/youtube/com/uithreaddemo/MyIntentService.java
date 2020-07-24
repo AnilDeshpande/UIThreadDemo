@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.JobIntentService;
 
 import java.util.Random;
@@ -14,10 +15,15 @@ import java.util.Random;
 public class MyIntentService extends JobIntentService {
 
     private int mRandomNumber;
-    private boolean mIsRandomGeneratorOn;
 
+    boolean isThreadOn = false;
     private final int MIN=0;
     private final int MAX=100;
+
+    @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
 
     static void enqueueWork(Context context, Intent intent){
         enqueueWork(context,MyIntentService.class, 101, intent);
@@ -26,31 +32,32 @@ public class MyIntentService extends JobIntentService {
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
         Log.i(getString(R.string.service_demo_tag), "onHandleWork, Thread Id: "+Thread.currentThread().getId());
-        mIsRandomGeneratorOn = true;
-        startRandomNumberGenerator();
+        isThreadOn = true;
+        startRandomNumberGenerator(intent.getStringExtra("starter"));
     }
 
-    private void startRandomNumberGenerator(){
-        while (mIsRandomGeneratorOn){
+    private void startRandomNumberGenerator(String seedValue){
+        while (isThreadOn){
             try{
-                Thread.sleep(1000);
-                if(mIsRandomGeneratorOn){
-                    mRandomNumber =new Random().nextInt(MAX)+MIN;
-                    Log.i(getString(R.string.service_demo_tag),"Thread id: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber);
-                }else {
-                    Log.i(getString(R.string.service_demo_tag),"Service stopped");
+                if(isStopped()){
+                    Log.i(getString(R.string.service_demo_tag), "Sorry, JobScheduler is force stopping the thread: "+ isStopped());
                     return;
                 }
+                Thread.sleep(1000);
+                mRandomNumber =new Random().nextInt(MAX)+MIN;
+                Log.i(getString(R.string.service_demo_tag),"Thread id: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber+", "+seedValue);
             }catch (InterruptedException e){
                 Log.i(getString(R.string.service_demo_tag),"Thread Interrupted");
             }
+
         }
+        Log.i(getString(R.string.service_demo_tag),"Service stopped");
+        stopSelf();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mIsRandomGeneratorOn=false;
         Log.i(getString(R.string.service_demo_tag),getString(R.string.string_stopservice)+ ", thread Id: "+Thread.currentThread().getId());
     }
 

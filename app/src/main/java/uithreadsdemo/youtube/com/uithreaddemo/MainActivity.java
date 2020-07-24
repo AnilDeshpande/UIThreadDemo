@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
+                serviceIntent.putExtra("starter","starter"+(++count));
                 MyIntentService.enqueueWork(this,serviceIntent);
                 break;
             case R.id.buttonStopthread:

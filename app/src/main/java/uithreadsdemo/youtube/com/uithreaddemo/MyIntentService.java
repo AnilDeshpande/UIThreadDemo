@@ -51,7 +51,6 @@ public class MyIntentService extends JobService {
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
         Log.i(getString(R.string.service_demo_tag),"onStopJob");
-        mIsRandomGeneratorOn = false;
         return false;
     }
 

@@ -24,10 +24,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isServiceBound;
     private ServiceConnection  serviceConnection;
 
+    JobScheduler jobScheduler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        jobScheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
 
         Log.i(getString(R.string.service_demo_tag), "MainActivity thread id: " + Thread.currentThread().getId());
 
@@ -56,13 +60,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void startJob(){
         ComponentName componentName = new ComponentName(this, MyIntentService.class);
         JobInfo jobInfo = new JobInfo.Builder(101,componentName)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_CELLULAR)
                 .setPeriodic(15*60*1000)
                 .setRequiresCharging(false)
                 .setPersisted(true)
                 .build();
 
-        JobScheduler jobScheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
         if(jobScheduler.schedule(jobInfo)==JobScheduler.RESULT_SUCCESS){
             Log.i(getString(R.string.service_demo_tag), "MainActivity thread id: " + Thread.currentThread().getId()+", job successfully scheduled");
         }else {
@@ -71,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void stopJob(){
-        JobScheduler jobScheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
         jobScheduler.cancel(101);
     }
 }

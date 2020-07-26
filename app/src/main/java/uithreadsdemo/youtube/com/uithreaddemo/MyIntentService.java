@@ -13,7 +13,6 @@ public class MyIntentService extends JobService {
 
     private final int MIN=0;
     private final int MAX=100;
-    JobParameters jobParameters;
 
     /**
      * Return FALSE when this jpb is of short duration
@@ -27,8 +26,7 @@ public class MyIntentService extends JobService {
      */
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
-        Log.i(getString(R.string.service_demo_tag),"onStartJob, jobId"+jobParameters.getJobId());
-        this.jobParameters = jobParameters;
+        Log.i(getString(R.string.service_demo_tag),"onStartJob");
         doBackgroundWork();
         return true;
     }
@@ -52,34 +50,28 @@ public class MyIntentService extends JobService {
      */
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
-        Log.i(getString(R.string.service_demo_tag),"onStopJob, JobId: "+jobParameters.getJobId());
-        return true;
+        Log.i(getString(R.string.service_demo_tag),"onStopJob");
+        return false;
     }
 
     private void startRandomNumberGenerator(){
-        int counter = 0;
-        while (counter<5){
+        while (mIsRandomGeneratorOn){
             try{
                 Thread.sleep(1000);
                 if(mIsRandomGeneratorOn){
                     mRandomNumber =new Random().nextInt(MAX)+MIN;
-                    Log.i(getString(R.string.service_demo_tag),"JobId: "+jobParameters.getJobId()+
-                            ", Thread id: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber);
+                    Log.i(getString(R.string.service_demo_tag),"Thread id: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber);
                 }
             }catch (InterruptedException e){
                 Log.i(getString(R.string.service_demo_tag),"Thread Interrupted");
             }
-            counter++;
         }
-        this.jobFinished(jobParameters,true);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mIsRandomGeneratorOn=false;
-        Log.i(getString(R.string.service_demo_tag),getString(R.string.string_stopservice)+
-                ", thread Id: "+Thread.currentThread().getId()+
-                " JobId: "+jobParameters.getJobId());
+        Log.i(getString(R.string.service_demo_tag),getString(R.string.string_stopservice)+ ", thread Id: "+Thread.currentThread().getId());
     }
 }

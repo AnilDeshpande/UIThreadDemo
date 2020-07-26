@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isServiceBound;
     private ServiceConnection  serviceConnection;
 
-    int jobId = 101;
     JobScheduler jobScheduler;
 
     @Override
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void startJob(){
         ComponentName componentName = new ComponentName(this, MyIntentService.class);
-        JobInfo jobInfo = new JobInfo.Builder(jobId++,componentName)
+        JobInfo jobInfo = new JobInfo.Builder(101,componentName)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_CELLULAR)
                 .setPeriodic(15*60*1000)
                 .setRequiresCharging(false)
@@ -75,6 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void stopJob(){
-        jobScheduler.cancel(jobId);
+        jobScheduler.cancel(101);
     }
 }

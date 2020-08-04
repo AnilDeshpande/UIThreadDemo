@@ -1,6 +1,5 @@
 package uithreadsdemo.youtube.com.uithreaddemo;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;

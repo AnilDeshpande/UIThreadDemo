@@ -36,7 +36,7 @@ public class MyIntentService extends JobIntentService {
         startRandomNumberGenerator(intent.getStringExtra("starter"));
     }
 
-    private void startRandomNumberGenerator(String seedValue){
+    private void startRandomNumberGenerator(String starterIdentifier){
         for (int i=0;i<5;i++){
             try{
                 if(isStopped()){
@@ -45,7 +45,7 @@ public class MyIntentService extends JobIntentService {
                 }
                 Thread.sleep(1000);
                 mRandomNumber =new Random().nextInt(MAX)+MIN;
-                Log.i(getString(R.string.service_demo_tag),"Thread id: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber+", "+seedValue);
+                Log.i(getString(R.string.service_demo_tag),"Thread id: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber+", "+starterIdentifier);
             }catch (InterruptedException e){
                 Log.i(getString(R.string.service_demo_tag),"Thread Interrupted");
             }

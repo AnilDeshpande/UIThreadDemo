@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void startJob(){
         ComponentName componentName = new ComponentName(this, MyIntentService.class);
         JobInfo jobInfo = new JobInfo.Builder(jobId++,componentName)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_CELLULAR)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                 .setPeriodic(15*60*1000)
                 .setRequiresCharging(false)
                 .setPersisted(true)

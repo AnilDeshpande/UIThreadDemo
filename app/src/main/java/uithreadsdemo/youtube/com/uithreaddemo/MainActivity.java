@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
                 mStopLoop = true;
-                ContextCompat.startForegroundService(this, serviceIntent);
+                ContextCompat.startForegroundService(this,serviceIntent);
                 break;
             case R.id.buttonStopthread:
                 stopService(serviceIntent);

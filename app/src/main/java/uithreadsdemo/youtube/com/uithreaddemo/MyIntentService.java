@@ -3,6 +3,7 @@ package uithreadsdemo.youtube.com.uithreaddemo;
 import android.app.IntentService;
 import android.app.Notification;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -50,8 +51,6 @@ public class MyIntentService extends IntentService{
     }
 
     private Notification getNotification(){
-
-
         return MyApplication.getMyAppsNotificationManager().getNotification(MainActivity.class,
                 "BackgroundService running",
                 1,

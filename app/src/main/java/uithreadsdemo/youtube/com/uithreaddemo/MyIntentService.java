@@ -2,9 +2,7 @@ package uithreadsdemo.youtube.com.uithreaddemo;
 
 import android.app.IntentService;
 import android.app.Notification;
-import android.app.Service;
 import android.content.Intent;
-import android.content.pm.ServiceInfo;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -26,7 +24,6 @@ public class MyIntentService extends IntentService{
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         startForeground(1, getNotification());
-        //startForeground(1, getNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
         mIsRandomGeneratorOn =true;
         startRandomNumberGenerator();
     }
@@ -53,6 +50,8 @@ public class MyIntentService extends IntentService{
     }
 
     private Notification getNotification(){
+
+
         return MyApplication.getMyAppsNotificationManager().getNotification(MainActivity.class,
                 "BackgroundService running",
                 1,

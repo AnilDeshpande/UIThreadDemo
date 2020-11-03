@@ -11,6 +11,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,12 +30,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isServiceBound;
     private ServiceConnection  serviceConnection;
 
+    WorkManager workManager;
+
     /*Handler handler;*/
 
 
     private  Intent serviceIntent;
 
     private boolean mStopLoop;
+    private WorkRequest workRequest;
 
 
 
@@ -48,8 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonStart.setOnClickListener(this);
         buttonStop.setOnClickListener(this);
 
-        serviceIntent=new Intent(getApplicationContext(),MyIntentService.class);
+        workManager = WorkManager.getInstance(getApplicationContext());
 
+        //workRequest = OneTimeWorkRequest.from(RandomNumberGeneratorWorker.class);
+
+        workRequest = new PeriodicWorkRequest.Builder(RandomNumberGeneratorWorker.class, 15, TimeUnit.MINUTES).build();
     }
 
     @Override
@@ -57,10 +69,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
                 mStopLoop = true;
-                ContextCompat.startForegroundService(this, serviceIntent);
+                workManager.enqueue(workRequest);
                 break;
             case R.id.buttonStopthread:
-                stopService(serviceIntent);
+                workManager.cancelWorkById(workRequest.getId());
                 break;
         }
     }

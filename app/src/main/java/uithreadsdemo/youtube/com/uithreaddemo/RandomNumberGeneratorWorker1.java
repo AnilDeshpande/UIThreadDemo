@@ -9,7 +9,7 @@ import androidx.work.WorkerParameters;
 
 import java.util.Random;
 
-public class RandomNumberGeneratorWorker extends Worker {
+public class RandomNumberGeneratorWorker1 extends Worker {
 
     Context context;
     WorkerParameters workerParameters;
@@ -20,7 +20,7 @@ public class RandomNumberGeneratorWorker extends Worker {
     private final int MIN=0;
     private final int MAX=100;
 
-    public RandomNumberGeneratorWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public RandomNumberGeneratorWorker1(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context = context;
         this.workerParameters = workerParams;

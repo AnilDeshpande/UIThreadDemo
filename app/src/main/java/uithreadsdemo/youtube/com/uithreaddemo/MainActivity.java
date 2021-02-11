@@ -2,7 +2,6 @@ package uithreadsdemo.youtube.com.uithreaddemo;
 
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private  Intent serviceIntent;
 
     private boolean mStopLoop;
-    private WorkRequest workRequest;
+    private WorkRequest workRequest1, getWorkRequest2, workRequest3;
 
 
 
@@ -61,7 +59,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //workRequest = OneTimeWorkRequest.from(RandomNumberGeneratorWorker.class);
 
-        workRequest = new PeriodicWorkRequest.Builder(RandomNumberGeneratorWorker.class, 15, TimeUnit.MINUTES).build();
+        workRequest1 = 
+
+
     }
 
     @Override

@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //workRequest = OneTimeWorkRequest.from(RandomNumberGeneratorWorker.class);
 
-        workRequest1 = 
+        
 
 
     }

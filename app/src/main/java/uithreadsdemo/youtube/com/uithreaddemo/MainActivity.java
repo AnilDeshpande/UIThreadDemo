@@ -14,6 +14,7 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -36,16 +37,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private  Intent serviceIntent;
 
     private boolean mStopLoop;
-    private WorkRequest workRequest1, getWorkRequest2, workRequest3;
 
-
+    private OneTimeWorkRequest workRequest1, workRequest2, workRequest3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i(getString(R.string.service_demo_tag), "MainActivity thread id: " + Thread.currentThread().getId());
+        Log.i(getString(R.string.worker_demo), "MainActivity thread id: " + Thread.currentThread().getId());
 
         buttonStart = (Button) findViewById(R.id.buttonThreadStarter);
         buttonStop = (Button) findViewById(R.id.buttonStopthread);
@@ -55,12 +55,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonStart.setOnClickListener(this);
         buttonStop.setOnClickListener(this);
 
-        workManager = WorkManager.getInstance(getApplicationContext());
+        //workManager = WorkManager.getInstance(getApplicationContext());
 
         //workRequest = OneTimeWorkRequest.from(RandomNumberGeneratorWorker.class);
+        workRequest1 = new OneTimeWorkRequest.Builder(RandomNumberGeneratorWorker1.class).addTag("worker1").build();
+        workRequest2 = new OneTimeWorkRequest.Builder(RandomNumberGeneratorWorker2.class).addTag("worker2").build();
+        workRequest3 = new OneTimeWorkRequest.Builder(RandomNumberGeneratorWorker3.class).addTag("worker3").build();
 
-        
 
+
+
+        workManager = WorkManager.getInstance(getApplicationContext());
 
     }
 
@@ -69,10 +74,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.buttonThreadStarter:
                 mStopLoop = true;
-                workManager.enqueue(workRequest);
+                //workManager.enqueue(workRequest);
+                WorkManager.getInstance(getApplicationContext()).beginWith(workRequest1).then(workRequest2).then(workRequest3).enqueue();
                 break;
             case R.id.buttonStopthread:
-                workManager.cancelWorkById(workRequest.getId());
+                //workManager.cancelWorkById(workRequest.getId());
+                workManager.cancelAllWorkByTag("worker3");
                 break;
         }
     }

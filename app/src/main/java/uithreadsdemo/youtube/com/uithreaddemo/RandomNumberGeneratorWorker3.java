@@ -17,8 +17,8 @@ public class RandomNumberGeneratorWorker3 extends Worker {
     private int mRandomNumber;
     private boolean mIsRandomGeneratorOn;
 
-    private final int MIN=201;
-    private final int MAX=300;
+    private final int MIN=301;
+    private final int MAX=400;
 
     public RandomNumberGeneratorWorker3(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -37,7 +37,7 @@ public class RandomNumberGeneratorWorker3 extends Worker {
     @Override
     public void onStopped() {
         super.onStopped();
-        Log.i(context.getString(R.string.service_demo_tag),"Worker has been cancelled");
+        Log.i(context.getString(R.string.worker_demo),"Worker3 has been cancelled");
     }
 
     private void startRandomNumberGenerator(){
@@ -47,11 +47,11 @@ public class RandomNumberGeneratorWorker3 extends Worker {
                 Thread.sleep(1000);
                 if(mIsRandomGeneratorOn){
                     mRandomNumber =new Random().nextInt(MAX)+MIN;
-                    Log.i(context.getString(R.string.service_demo_tag),"Thread id: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber);
+                    Log.i(context.getString(R.string.worker_demo),"Worker3: "+Thread.currentThread().getId()+", Random Number: "+ mRandomNumber);
                     i++;
                 }
             }catch (InterruptedException e){
-                Log.i(context.getString(R.string.service_demo_tag),"Thread Interrupted");
+                Log.i(context.getString(R.string.worker_demo),"Thread Interrupted");
             }
         }
     }

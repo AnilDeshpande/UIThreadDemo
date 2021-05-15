@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="uithreadsdemo.youtube.com.uithreaddemo">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
@@ -19,6 +20,12 @@
         </activity>
 
         <service android:name=".MyIntentService"/>
+
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="location|dataSync"
+            tools:node="merge"
+            tools:ignore="Instantiatable" />
 
 
     </application>

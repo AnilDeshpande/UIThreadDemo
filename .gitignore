@@ -7,3 +7,7 @@
 /build
 /captures
 *.xml
+.idea/runConfigurations.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/compiler.xml
